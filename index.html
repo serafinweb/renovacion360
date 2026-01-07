@@ -9,6 +9,30 @@
 </head>
 
 <body class="bg-slate-950 text-slate-100 min-h-screen">
+<div style="padding: 20px; max-width: 700px; margin: 0 auto;">
+  <h2>Scraper Renovación360</h2>
+
+  <input
+    id="scrape-url"
+    type="text"
+    placeholder="Introduce una URL"
+    style="width: 100%; padding: 10px; margin-bottom: 10px; border-radius: 6px; border: 1px solid #ccc;"
+  />
+
+  <button
+    onclick="scrapear()"
+    style="padding: 10px 20px; background: #0070f3; color: white; border: none; border-radius: 6px; cursor: pointer;"
+  >
+    Scrapear
+  </button>
+
+  <p id="scrape-error" style="color: red; margin-top: 20px;"></p>
+
+  <pre
+    id="scrape-result"
+    style="background: #111; color: #0f0; padding: 20px; border-radius: 8px; overflow-x: auto; margin-top: 20px; display: none;"
+  ></pre>
+</div>
 
   <!-- CABECERA -->
   <header class="bg-gradient-to-br from-purple-600 via-fuchsia-600 to-pink-600 text-white">
@@ -321,6 +345,42 @@
 <script src="js/editor.js"></script>
 <script src="js/utils.js"></script>
 <script src="js/main.js"></script>
+
+<script>
+  async function scrapear() {
+    const url = document.getElementById("scrape-url").value;
+    const errorBox = document.getElementById("scrape-error");
+    const resultBox = document.getElementById("scrape-result");
+
+    errorBox.textContent = "";
+    resultBox.style.display = "none";
+    resultBox.textContent = "";
+
+    if (!url) {
+      errorBox.textContent = "Introduce una URL válida";
+      return;
+    }
+
+    try {
+      const res = await fetch(
+        `https://agente-renovacion360.vercel.app/api/scrape?url=${encodeURIComponent(url)}`
+      );
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        errorBox.textContent = data.error || "Error desconocido";
+        return;
+      }
+
+      resultBox.textContent = JSON.stringify(data, null, 2);
+      resultBox.style.display = "block";
+
+    } catch (err) {
+      errorBox.textContent = "Error de conexión con el backend";
+    }
+  }
+</script>
 
 </body>
 </html>
