@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Agente Renovación360 – Generador Automático de Demos (PRO sectorial)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body class="bg-slate-950 text-slate-100 min-h-screen">
+
+  <!-- CABECERA -->
+  <header class="bg-gradient-to-br from-purple-600 via-fuchsia-600 to-pink-600 text-white">
+    <div class="max-w-6xl mx-auto px-4 py-10 md:py-14">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+        <div>
+          <p class="uppercase tracking-[0.3em] text-xs font-semibold/none text-fuchsia-200 mb-3">
+            SISTEMA COMERCIAL AUTOMATIZADO
+          </p>
+          <h1 class="text-3xl md:text-5xl font-black tracking-tight mb-3">
+            Agente Renovación360
+          </h1>
+          <p class="text-sm md:text-base text-fuchsia-100/90 max-w-2xl">
+            De una simple URL a: auditoría de venta, demo web sectorial mejorada, argumentos para la llamada y scoring
+            de oportunidad. Todo en menos de 1 minuto, con vista previa integrada y editor básico de la demo.
+          </p>
+        </div>
+        <div class="flex flex-col items-start md:items-end gap-3 text-sm">
+          <span class="inline-flex items-center gap-2 rounded-full bg-black/20 px-3 py-1 border border-white/20">
+            <span class="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span class="text-xs font-medium uppercase tracking-wide">Motor sectorial activo</span>
+          </span>
+          <div class="text-right text-fuchsia-100/80 text-xs md:text-sm">
+            <p class="font-semibold">Modo PRO – Plantillas por tipo de negocio</p>
+            <p>Demo sectorial visible, editable y lista para usar en tu llamada de venta.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 py-8 md:py-10">
+
+    <!-- SECCIÓN CONFIGURACIÓN -->
+    <section class="bg-slate-900/70 border border-slate-800 rounded-2xl shadow-xl shadow-black/40 p-6 md:p-8 mb-8">
+      <div class="flex items-center justify-between gap-4 mb-6">
+        <h2 class="text-xl md:text-2xl font-bold text-slate-50 flex items-center gap-2">
+          <span class="inline-flex h-7 w-7 rounded-full items-center justify-center bg-purple-600/80 text-sm">1</span>
+          <span>Configuración inicial (Netlify token)</span>
+        </h2>
+        <span class="text-xs text-slate-400 hidden md:inline">
+          Se guarda sólo en tu navegador. No se envía a ningún servidor.
+        </span>
+      </div>
+
+      <div class="space-y-4">
+        <div>
+          <label for="netlifyToken" class="block text-xs font-semibold text-slate-200 mb-1.5">
+            Token personal de Netlify
+            <span class="text-red-400">*</span>
+          </label>
+          <input
+            id="netlifyToken"
+            type="password"
+            placeholder="Pega aquí tu token de Netlify (para deploy real futuro; ahora es opcional)"
+            class="w-full px-4 py-2.5 rounded-lg bg-slate-950/60 border border-slate-700 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+          />
+          <p class="text-[11px] text-slate-400 mt-1.5">
+            Se guarda en <span class="font-semibold">localStorage</span> de tu navegador. Sólo tú lo ves.
+            <a
+              href="https://app.netlify.com/user/applications"
+              target="_blank"
+              class="text-purple-300 hover:text-purple-200 underline underline-offset-2 ml-1"
+            >
+              ¿Cómo conseguir el token?
+            </a>
+          </p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-3">
+          <button
+            type="button"
+            onclick="saveToken()"
+            class="inline-flex items-center gap-2 bg-purple-600 hover:bg-purple-500 text-white text-sm font-semibold px-4 py-2.5 rounded-lg transition-colors"
+          >
+            <span>Guardar token</span>
+            <span>💾</span>
+          </button>
+          <button
+            type="button"
+            onclick="clearToken()"
+            class="inline-flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium px-3 py-2 rounded-lg border border-slate-700 transition-colors"
+          >
+            <span>Eliminar token guardado</span>
+          </button>
+        </div>
+
+        <div
+          id="tokenStatus"
+          class="hidden text-xs rounded-lg px-3 py-2 border border-transparent"
+        ></div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN PRINCIPAL: INPUT -->
+    <section class="bg-slate-900/70 border border-slate-800 rounded-2xl shadow-xl shadow-black/40 p-6 md:p-8 mb-8">
+      <div class="flex items-center justify-between gap-4 mb-6">
+        <h2 class="text-xl md:text-2xl font-bold text-slate-50 flex items-center gap-2">
+          <span class="inline-flex h-7 w-7 rounded-full items-center justify-center bg-emerald-500/80 text-sm">2</span>
+          <span>Generar demostración automática</span>
+        </h2>
+        <span class="text-xs text-slate-400 hidden md:inline">
+          URL → Auditoría + Demo sectorial + Pitch + Scoring + Preview
+        </span>
+      </div>
+
+      <div class="space-y-5">
+
+        <!-- URL -->
+        <div>
+          <label for="businessUrl" class="block text-xs font-semibold text-slate-200 mb-1.5">
+            URL del negocio
+            <span class="text-red-400">*</span>
+          </label>
+          <input
+            id="businessUrl"
+            type="url"
+            placeholder="https://lacristaleriadesevilla.com"
+            class="w-full px-4 py-2.5 rounded-lg bg-slate-950/60 border border-slate-700 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+          />
+          <p class="text-[11px] text-slate-400 mt-1.5">
+            La web actual del negocio que quieres mejorar. Aunque sea básica, nos vale para la simulación.
+          </p>
+        </div>
+
+        <!-- TIPO -->
+        <div>
+          <label for="businessType" class="block text-xs font-semibold text-slate-200 mb-1.5">
+            Tipo de negocio (puedes forzarlo o dejar auto)
+          </label>
+          <select
+            id="businessType"
+            class="w-full px-4 py-2.5 rounded-lg bg-slate-950/60 border border-slate-700 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+          >
+            <option value="auto">🤖 Detectar automáticamente</option>
+            <option value="cristalería">🪟 Cristalería</option>
+            <option value="estética">💉 Clínica estética</option>
+            <option value="fontanería">🔧 Fontanería</option>
+            <option value="electricista">⚡ Electricista</option>
+            <option value="cerrajería">🔑 Cerrajería</option>
+            <option value="taller">🚗 Taller mecánico</option>
+            <option value="restaurante">🍽️ Restaurante</option>
+            <option value="otros">🏪 Otros</option>
+          </select>
+        </div>
+
+        <!-- BOTÓN -->
+        <div class="pt-2">
+          <button
+            id="generateBtn"
+            type="button"
+            onclick="generateDemo()"
+            class="w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 hover:from-emerald-400 hover:via-teal-400 hover:to-cyan-400 text-slate-950 font-bold text-sm md:text-base py-3.5 rounded-xl shadow-lg shadow-emerald-500/30 transition-transform active:scale-[0.98]"
+          >
+            <span>🚀 Generar demostración completa</span>
+          </button>
+          <p class="text-[11px] text-slate-500 mt-2 text-center">
+            Análisis simulado, pero demo sectorial, discurso, scoring y preview 100% funcionales dentro de este agente.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- PROCESO -->
+    <section
+      id="progressSection"
+      class="hidden bg-slate-900/70 border border-slate-800 rounded-2xl shadow-xl shadow-black/40 p-6 md:p-8 mb-8"
+    >
+      <h3 class="text-lg md:text-xl font-bold text-slate-50 mb-4 flex items-center gap-2">
+        <span class="inline-flex h-7 w-7 rounded-full items-center justify-center bg-cyan-500/80 text-sm">3</span>
+        <span>Proceso</span>
+      </h3>
+
+      <div class="space-y-4 text-sm">
+        <div class="flex items-center gap-3">
+          <div id="step1" class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-xs font-bold text-slate-100 animate-pulse">1</div>
+          <span id="step1Text" class="text-slate-300">Analizando web actual...</span>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <div id="step2" class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-xs font-bold text-slate-100">2</div>
+          <span id="step2Text" class="text-slate-500">Detectando problemas como oportunidades...</span>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <div id="step3" class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-xs font-bold text-slate-100">3</div>
+          <span id="step3Text" class="text-slate-500">Generando demostración sectorial...</span>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <div id="step4" class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-xs font-bold text-slate-100">4</div>
+          <span id="step4Text" class="text-slate-500">Simulando deploy...</span>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <div id="step5" class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-xs font-bold text-slate-100">5</div>
+          <span id="step5Text" class="text-slate-500">Generando argumentos y pitch...</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESULTADOS -->
+    <section id="resultsSection" class="hidden space-y-8 mb-8">
+
+      <!-- DEMO + PREVIEW -->
+      <div class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-2xl shadow-xl shadow-emerald-500/30 p-6 md:p-8">
+        <h3 class="text-xl md:text-2xl font-bold mb-4 flex items-center gap-2">
+          <span>✅ Demo lista</span>
+        </h3>
+
+        <div class="bg-black/15 rounded-lg p-4 mb-4 border border-emerald-200/30">
+          <p class="text-xs md:text-sm text-emerald-50/90 mb-1.5">Enlace simulado de la demostración:</p>
+          <a id="demoLink" href="#" target="_blank" class="block text-sm md:text-xl font-mono break-all hover:underline"></a>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+          <!-- Botones + editor -->
+          <div class="space-y-3">
+            <p class="text-xs md:text-sm text-emerald-50/90 mb-1.5">Vista previa directa de la demo y herramientas:</p>
+
+            <div class="flex flex-wrap gap-3">
+              <button type="button" onclick="copyDemoLink()" class="inline-flex items-center gap-2 bg-white text-emerald-700 px-4 py-2.5 rounded-lg text-sm font-semibold hover:bg-emerald-50 transition-colors">
+                <span>Copiar enlace 📋</span>
+              </button>
+
+              <button type="button" onclick="openDemo()" class="inline-flex items-center gap-2 bg-white text-emerald-700 px-4 py-2.5 rounded-lg text-sm font-semibold hover:bg-emerald-50 transition-colors">
+                <span>Abrir demo 🌐</span>
+              </button>
+            </div>
+
+            <!-- Editor -->
+            <div class="bg-slate-950/40 border border-emerald-200/30 rounded-xl p-4 mt-2 text-slate-50">
+              <h4 class="text-sm font-semibold mb-2 flex items-center gap-2">🛠️ Ajustar demo generada</h4>
+              <p class="text-[11px] text-emerald-50/80 mb-2">
+                Escribe indicaciones breves para ajustar la demo. En esta versión se aplican reglas simples (colores, textos).
+              </p>
+
+              <textarea id="demoEditRequest" class="w-full h-24 bg-slate-900/80 border border-emerald-300/30 rounded-lg p-2.5 text-xs text-emerald-50 placeholder:text-emerald-100/50 focus:outline-none focus:ring-1 focus:ring-emerald-300"
+                placeholder="Ejemplos:
+- Cambia el color del botón principal a rojo
+- Haz el título del hero más agresivo
+- Añade una frase de urgencia en el hero"></textarea>
+
+              <button type="button" onclick="applyDemoChanges()" class="mt-2 inline-flex items-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 px-3 py-2 rounded-lg text-xs font-semibold transition-colors">
+                <span>Aplicar cambios</span>
+                <span>✨</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Iframe preview -->
+          <div class="bg-slate-950/70 border border-emerald-200/30 rounded-xl p-3">
+            <p class="text-[11px] text-emerald-50/70 mb-2 flex items-center justify-between">
+              <span>Vista previa en vivo:</span>
+              <span class="italic text-emerald-200/70">Sin deploy real, renderizado local.</span>
+            </p>
+
+            <div class="border border-slate-800 rounded-lg overflow-hidden bg-white">
+              <iframe id="demoPreview" class="w-full h-[360px] md:h-[420px] bg-white"></iframe>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- SCORING -->
+      <div class="bg-slate-900/70 border border-slate-800 rounded-2xl shadow-xl shadow-black/40 p-6 md:p-8">
+        <h3 class="text-xl font-bold text-slate-50 mb-4">🎯 Puntuación del lead</h3>
+        <div id="scoringContent"></div>
+      </div>
+
+      <!-- ARGUMENTOS -->
+      <div class="bg-slate-900/70 border border-slate-800 rounded-2xl shadow-xl shadow-black/40 p-6 md:p-8">
+        <div class="flex items-center justify-between gap-4 mb-4">
+          <h3 class="text-xl font-bold text-slate-50">💼 Argumentos para tu llamada</h3>
+
+          <button type="button" onclick="downloadArgumentsTxt()" class="inline-flex items-center gap-2 bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold px-3 py-2 rounded-lg transition-colors">
+            <span>Descargar TXT</span>
+            <span>📥</span>
+          </button>
+        </div>
+
+        <div id="salesArguments" class="text-xs md:text-sm text-slate-100 bg-slate-950/70 border border-slate-800 rounded-lg p-4 max-h-[360px] overflow-auto"></div>
+      </div>
+
+      <!-- SCRIPT PITCH -->
+<div class="bg-gradient-to-r from-sky-500 via-blue-600 to-indigo-600 text-white rounded-2xl shadow-xl shadow-sky-500/30 p-6 md:p-8">
+  <div class="flex flex-wrap items-center justify-between gap-4 mb-4">
+    <h3 class="text-xl font-bold">📞 Script personalizado para la llamada</h3>
+
+    <button type="button" onclick="copyPitchScript()" class="inline-flex items-center gap-2 bg-white text-blue-700 px-4 py-2.5 rounded-lg text-xs font-semibold hover:bg-blue-50 transition-colors">
+      <span>Copiar script</span>
+      <span>📋</span>
+    </button>
+  </div>
+
+  <div id="pitchScript" class="text-xs md:text-sm bg-white/10 rounded-lg p-4 max-h-[360px] overflow-auto"></div>
+</div>
+
+</section>
+
+</main>
+
+<!-- SCRIPTS -->
+<script src="js/sector-data.js"></script>
+<script src="js/templates.js"></script>
+<script src="js/generator.js"></script>
+<script src="js/editor.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/main.js"></script>
+
+</body>
+</html>
